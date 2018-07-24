@@ -1,10 +1,17 @@
 package serapbercin.com.myapplication.ui.main
 
+import dagger.Binds
 import dagger.Module
+import serapbercin.com.myapplication.ui.main.presenter.MainPresenter
 
 
 @Module
 abstract class MainActivityModule {
 
-	//TODO will bind MainPresenter and View
+	@Binds
+	abstract fun bindView(mainActivity: MainActivity): MainContract.View
+
+	@Binds
+	abstract fun bindPresenter(presenter: MainPresenter): MainContract.Presenter
+
 }
