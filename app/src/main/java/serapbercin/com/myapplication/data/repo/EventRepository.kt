@@ -1,10 +1,11 @@
 package serapbercin.com.myapplication.data.repo
 
 import io.reactivex.Single
-import serapbercin.com.myapplication.data.model.EventList
+import retrofit2.adapter.rxjava2.Result
+import serapbercin.com.myapplication.data.model.EventResponse
 
 
 interface EventRepository {
 
-	fun getEvents(): Single<List<EventList>>
+	fun getEvents(): Single<Result<EventResponse>>
 }

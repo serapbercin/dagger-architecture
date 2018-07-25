@@ -7,6 +7,8 @@ import serapbercin.com.myapplication.data.model.EventList
 import serapbercin.com.myapplication.data.repo.EventRepository
 import serapbercin.com.myapplication.di.OnDestroy
 import serapbercin.com.myapplication.ui.main.MainContract
+import serapbercin.com.myapplication.utils.rxUtils.ResponseParser
+import serapbercin.com.myapplication.utils.rxUtils.SingleTransformer
 import javax.inject.Inject
 
 class MainPresenter @Inject constructor(val view: MainContract.View,
@@ -20,8 +22,9 @@ class MainPresenter @Inject constructor(val view: MainContract.View,
 		repository.getEvents()
 				.takeUntil(onDestroyCompletable)
 				.observeOn(AndroidSchedulers.mainThread())
+				.compose(SingleTransformer(ResponseParser()).resultToResponseWithHttpErrorHandling())
 				.subscribe({ eventList ->
-					onSuccess(eventList)
+					onSuccess(eventList.body()?.list)
 				}, { throwable -> onFailure(throwable) })
 
 	}
