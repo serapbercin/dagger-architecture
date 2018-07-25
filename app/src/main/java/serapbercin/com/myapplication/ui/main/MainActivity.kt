@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.subjects.CompletableSubject
 import serapbercin.com.myapplication.R
 import serapbercin.com.myapplication.ui.mainfragment.MainFragment
 import javax.inject.Inject
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, MainContra
 
 	@Inject
 	lateinit var presenter: MainContract.Presenter
+
+	val onDestroyCompletable = CompletableSubject.create()!!
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		AndroidInjection.inject(this)
@@ -35,4 +38,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, MainContra
 
 	override fun supportFragmentInjector() = dispatchingAndroidInjector
 
+
+	override fun onDestroy() {
+		onDestroyCompletable.onComplete()
+		super.onDestroy()
+	}
 }
